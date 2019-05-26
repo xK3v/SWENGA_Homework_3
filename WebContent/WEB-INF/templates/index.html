@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="~{includes/bootstrapMeta :: bootstrapMeta}" />
+<title>Game Manager</title>
+<div th:replace="~{includes/bootstrapCSS :: bootstrapCSS}" />
+</head>
+<body>
+	<div class="container" role="main">
+
+
+
+		<!--  1 simple button ----------------------------------------------------------- -->
+		<div class="row">
+			<div class="col-md-10">
+				<h1>Spring Data JPA</h1>
+			</div>
+
+			<div class="col-md-2">
+				<a href="fillGameList">
+					<button type="button" class="btn btn-success">Fill List</button>
+				</a>
+			</div>
+		</div>
+
+		<!--  search by Id ----------------------------------------------------------- -->
+		<form action="findById" method="post">
+			<div class="form-row">
+				<div class="form-group col-sm-12">
+					<label for="id">Find by Id:</label> <input id="id" type="text"
+						class="form-control" name="id">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-sm-12">
+					<input class="btn btn-primary" type="submit" value="Do it">
+				</div>
+			</div>
+		</form>
+
+		<!--  paging example ----------------------------------------------------------- -->
+		<form action="getPage" method="post">
+			<div class="form-row">
+				<div class="form-group col-sm-6">
+					<label for="page">Page:</label> <input id="page" type="text"
+						class="form-control" name="page">
+				</div>
+				<div class="form-group col-sm-6">
+					<label for="size">Size:</label> <input id="size" type="text"
+						class="form-control" name="size">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-sm-12">
+					<input class="btn btn-primary" type="submit" value="Do it">
+				</div>
+			</div>
+		</form>
+
+
+		<!--  Search + Fill ----------------------------------------------------------- -->
+		<form method="post" action="find">
+			<div class="form-row">
+				<div class="form-group col-sm-6">
+					<label for="searchType">Search:</label> <select id="searchType"
+						class="form-control" name="searchType">
+						<option value="query1" selected="selected">Show all
+							games</option>
+						<option value="query2">Filter games by name</option>
+						<option value="query5">search with named query</option>
+						<option value="query6">count games by name</option>
+						<option value="query7">delete games with given
+							name</option>
+						<option value="query8">delete all games from developer</option>
+						<option value="query9">list of games where name
+							or developer contains a given searchstring</option>
+						<option value="query10">order list by developer</option>
+						<option value="query11">Sort all games by name
+							ascending (top 10)</option>
+						<option value="query12">sort games by name @
+							developer</option>
+						<option value="query13">not older than 40</option>
+						<option value="query14">released between 1980 and 1985</option>
+						<option value="query15">Filter games by developer name</option>
+					</select>
+				</div>
+				<div class="form-group col-sm-6">
+					<label for="searchString">SearchString:</label> <input
+						id="searchString" class="form-control" type="text"
+						name="searchString">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-sm-12">
+					<input class="btn btn-primary" type="submit" value="Do it">
+				</div>
+			</div>
+		</form>
+
+		<!--  Search + Fill ----------------------------------------------------------- -->
+		<h3>
+			Count: <span th:text="${count}"></span>
+		</h3>
+
+		<div class="row">
+			<div class="col-md-10 offset-md-1">
+
+				<table data-toggle="table" class="table table-striped">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Developer</th>
+							<th>Release Date</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!--  list all items ----------------------------------------------------------- -->
+						<tr th:each="game : ${games}">
+							<td th:text="${game.id}"></td>
+							<td th:text="${game.name}"></td>
+							<td th:text="${game.developer.name}"></td>
+							<td th:text="${#calendars.format(game.releaseDate,'dd.MM.yyyy')}"></td>
+							<td><a th:href="@{/delete(id=${game.id})}"
+								class="btn btn-danger">Delete</a></td>
+
+						</tr>
+						<!--  list all items ----------------------------------------------------------- -->
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</div>
+	<!--  End of container -->
+	<div th:replace="~{includes/bootstrapJS :: bootstrapJS}" />
+</body>
+</html>
